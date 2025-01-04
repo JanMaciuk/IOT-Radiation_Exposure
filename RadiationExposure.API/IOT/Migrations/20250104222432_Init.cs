@@ -47,37 +47,37 @@ namespace IOT.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FkEmployee = table.Column<int>(type: "integer", nullable: false),
-                    FkZone = table.Column<int>(type: "integer", nullable: false),
-                    EntranceTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ExitTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    EmployeeId = table.Column<int>(type: "integer", nullable: false),
+                    ZoneId = table.Column<int>(type: "integer", nullable: false),
+                    EntranceTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    ExitTime = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EmployeesRadiations", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EmployeesRadiations_Employees_FkEmployee",
-                        column: x => x.FkEmployee,
+                        name: "FK_EmployeesRadiations_Employees_EmployeeId",
+                        column: x => x.EmployeeId,
                         principalTable: "Employees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_EmployeesRadiations_Zones_FkZone",
-                        column: x => x.FkZone,
+                        name: "FK_EmployeesRadiations_Zones_ZoneId",
+                        column: x => x.ZoneId,
                         principalTable: "Zones",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeesRadiations_FkEmployee",
+                name: "IX_EmployeesRadiations_EmployeeId",
                 table: "EmployeesRadiations",
-                column: "FkEmployee");
+                column: "EmployeeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_EmployeesRadiations_FkZone",
+                name: "IX_EmployeesRadiations_ZoneId",
                 table: "EmployeesRadiations",
-                column: "FkZone");
+                column: "ZoneId");
         }
 
         /// <inheritdoc />

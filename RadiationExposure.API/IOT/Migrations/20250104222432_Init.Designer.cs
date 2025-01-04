@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace IOT.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250104193018_Init")]
+    [Migration("20250104222432_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -58,23 +58,23 @@ namespace IOT.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EntranceTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ExitTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("FkEmployee")
+                    b.Property<int>("EmployeeId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("FkZone")
+                    b.Property<DateTime>("EntranceTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("ExitTime")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("ZoneId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FkEmployee");
+                    b.HasIndex("EmployeeId");
 
-                    b.HasIndex("FkZone");
+                    b.HasIndex("ZoneId");
 
                     b.ToTable("EmployeesRadiations");
                 });
@@ -103,13 +103,13 @@ namespace IOT.Migrations
                 {
                     b.HasOne("IOT.Models.Employee", "Employee")
                         .WithMany()
-                        .HasForeignKey("FkEmployee")
+                        .HasForeignKey("EmployeeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("IOT.Models.Zone", "Zone")
                         .WithMany()
-                        .HasForeignKey("FkZone")
+                        .HasForeignKey("ZoneId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
