@@ -11,8 +11,8 @@ export const DrawerMenu = () => {
       icon: <DashboardSharp />,
     },
     {
-      text: "Rooms",
-      link: "/rooms",
+      text: "Zones",
+      link: "/zones",
       icon: <Room />,
     },
     {
@@ -28,7 +28,7 @@ export const DrawerMenu = () => {
   ];
 
   return (
-    <Box className='sticky w-32 p-4 min-h-screen'>
+    <Box className='sticky w-32 p-4 mt-12 min-h-screen'>
       <List className="flex flex-col">
         {navElements.map((navElement) => (
           <NavElement key={navElement.text} {...navElement} />
