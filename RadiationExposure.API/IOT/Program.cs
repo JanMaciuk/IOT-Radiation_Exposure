@@ -1,5 +1,7 @@
 using IOT.Helpers;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
+using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,9 +14,21 @@ builder.Services.AddDbContext<IOT.Data.AppDbContext>(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSerilog(config =>
+{
+    config
+        .MinimumLevel.Debug()
+        .MinimumLevel.Override("Microsoft.EntityFrameworkCore", LogEventLevel.Warning)
+        .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+        .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information)
+        .Enrich.FromLogContext();
+});
+
 builder.Services.AddScoped<DataSeeder>();
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging();
 
 if (app.Environment.IsDevelopment())
 {
