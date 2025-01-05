@@ -2,10 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using IOT.Data;
 using IOT.Dto;
+using IOT.Models;
 
 namespace IOT.Controllers;
 
-[Route("api")]
 [ApiController]
 public class IotController : ControllerBase
 {
@@ -16,15 +16,17 @@ public class IotController : ControllerBase
         _context = context;
     }
 
-    [HttpGet("zone")]
-    public async Task<IActionResult> GetAllZones()
+    [HttpGet("zones")]
+    [Tags("Zones")]
+    public async Task<ActionResult<Zone>> GetAllZones()
     {
         var zones = await _context.Zones.ToListAsync();
         return Ok(zones);
     }
 
-    [HttpGet("zone/{id}")]
-    public async Task<IActionResult> GetZoneById(int id)
+    [HttpGet("zones/{id}")]
+    [Tags("Zones")]
+    public async Task<ActionResult<Zone>> GetZoneById(int id)
     {
         var zone = await _context.Zones.FirstOrDefaultAsync(z => z.Id == id);
         if (zone == null)
@@ -35,8 +37,9 @@ public class IotController : ControllerBase
         return Ok(zone);
     }
 
-    [HttpGet("zone/{id}/entrances")]
-    public async Task<IActionResult> GetEntrancesForZone(int id)
+    [HttpGet("zones/{id}/entrances")]
+    [Tags("Zones")]
+    public async Task<ActionResult<List<GetEntranceResponse>>> GetEntrancesForZone(int id)
     {
         var entrances = await _context.EmployeeEntrance.Where(er => er.ZoneId == id)
             .Select(er => new GetEntranceResponse
@@ -56,18 +59,19 @@ public class IotController : ControllerBase
         return Ok(entrances);
     }
 
-    [HttpGet("employee")]
-    public async Task<IActionResult> GetAllEmployees()
+    [HttpGet("employees")]
+    [Tags("Employees")]
+    public async Task<ActionResult<EmployeeEntrance>> GetAllEmployees()
     {
         var employee = await _context.EmployeeEntrance.ToListAsync();
         return Ok(employee);
     }
 
-    [HttpGet("employee/{id}")]
-    public async Task<IActionResult> GetEmployeeById(int id)
+    [HttpGet("employees/{id}")]
+    [Tags("Employees")]
+    public async Task<ActionResult<Employee>> GetEmployeeById(int id)
     {
         var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
-
         if (employee == null)
         {
             return NotFound();
@@ -76,8 +80,9 @@ public class IotController : ControllerBase
         return Ok(employee);
     }
 
-    [HttpGet("employee-radiation/{id}")]
-    public async Task<IActionResult> GetEmployeeRadiation(int id, [FromQuery] DateTime? date)
+    [HttpGet("entrances/{id}")]
+    [Tags("Entrances")]
+    public async Task<ActionResult<GetEntranceResponse>> GetEmployeeRadiation(int id, [FromQuery] DateTime? date)
     {
         var query = _context.EmployeeEntrance
             .Where(e => e.EmployeeId == id);
