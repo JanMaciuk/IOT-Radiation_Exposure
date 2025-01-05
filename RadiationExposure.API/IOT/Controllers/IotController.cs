@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IOT.Data;
+using IOT.Dto;
 
 namespace IOT.Controllers;
 
-[Route("api/[controller]")]
+[Route("api")]
 [ApiController]
 public class IotController : ControllerBase
 {
@@ -26,101 +27,92 @@ public class IotController : ControllerBase
     public async Task<IActionResult> GetZoneById(int id)
     {
         var zone = await _context.Zones.FirstOrDefaultAsync(z => z.Id == id);
-        if (zone == null) { 
+        if (zone == null)
+        {
             return NotFound();
         }
 
-        return Ok(zone);    
+        return Ok(zone);
     }
 
-    [HttpGet("zone/{id}/info")]
-    public async Task<IActionResult> GetZoneInfoById(int id)
+    [HttpGet("zone/{id}/entrances")]
+    public async Task<IActionResult> GetEntrancesForZone(int id)
     {
-        var logs = await _context.EmployeesRadiations
-            .Where(er => er.ZoneId == id)
-            .Include(er => er.Employee)
-            .Select(er => new
+        var entrances = await _context.EmployeeEntrance.Where(er => er.ZoneId == id)
+            .Select(er => new GetEntranceResponse
             {
-                EmployeeName = $"{er.Employee.Name} {er.Employee.Surname}",
+                Id = er.Id,
+                ZoneId = er.ZoneId,
+                ZoneName = er.Zone.Info,
+                EmployeeName = er.Employee.Name,
                 EntryTime = er.EntranceTime,
                 ExitTime = er.ExitTime,
-                Duration = er.ExitTime.HasValue
-                    ? (er.ExitTime.Value - er.EntranceTime).TotalMinutes
-                    : (DateTime.UtcNow - er.EntranceTime).TotalMinutes,
-                RadiationDose = er.Zone.Radiation * ((er.ExitTime.HasValue
-                    ? (er.ExitTime.Value - er.EntranceTime).TotalMinutes
-                    : (DateTime.UtcNow - er.EntranceTime).TotalMinutes) / 60),
+                Duration = CalculateDuration(er.EntranceTime, er.ExitTime),
+                RadiationDose = CalculateRadiationDose(er.Zone.Radiation, CalculateDuration(er.EntranceTime, er.ExitTime)),
             })
+            .OrderBy(er => er.ExitTime)
             .ToListAsync();
 
-        var totalOccupants = logs.Count;
-        return Ok(new { Logs = logs, TotalOccupants = totalOccupants });
+        return Ok(entrances);
     }
 
     [HttpGet("employee")]
     public async Task<IActionResult> GetAllEmployees()
     {
-        var empolyee = await _context.EmployeesRadiations.ToListAsync();
-
-        return Ok(empolyee);
+        var employee = await _context.EmployeeEntrance.ToListAsync();
+        return Ok(employee);
     }
 
     [HttpGet("employee/{id}")]
     public async Task<IActionResult> GetEmployeeById(int id)
     {
-        var empolyee = await _context.EmployeesRadiations.FirstOrDefaultAsync(e => e.Id == id);
+        var employee = await _context.Employees.FirstOrDefaultAsync(e => e.Id == id);
 
-        if (empolyee == null) {
+        if (employee == null)
+        {
             return NotFound();
         }
 
-        return Ok(empolyee);
+        return Ok(employee);
     }
 
     [HttpGet("employee-radiation/{id}")]
-    public async Task<IActionResult> GetEmployeeRadiation(int id)
+    public async Task<IActionResult> GetEmployeeRadiation(int id, [FromQuery] DateTime? date)
     {
-        var empolyee = await _context.EmployeesRadiations
-            .Where(e => e.EmployeeId == id)
-            .Include(e=> e.Zone)
-            .Select(er => new
+        var query = _context.EmployeeEntrance
+            .Where(e => e.EmployeeId == id);
+
+        if (date.HasValue)
+        {
+            query = query.Where(e => e.EntranceTime.Date == date.Value.Date);
+        }
+
+        var employee = await query
+            .Select(er => new GetEntranceResponse
             {
+                Id = er.Id,
+                ZoneId = er.ZoneId,
                 ZoneName = er.Zone.Info,
                 EntryTime = er.EntranceTime,
                 ExitTime = er.ExitTime,
-                Duration = er.ExitTime.HasValue
-                    ? (er.ExitTime.Value - er.EntranceTime).TotalMinutes
-                    : (DateTime.UtcNow - er.EntranceTime).TotalMinutes,
-                RadiationDose = er.Zone.Radiation * ((er.ExitTime.HasValue
-                    ? (er.ExitTime.Value - er.EntranceTime).TotalMinutes
-                    : (DateTime.UtcNow - er.EntranceTime).TotalMinutes) / 60)
+                Duration = CalculateDuration(er.EntranceTime, er.ExitTime),
+                RadiationDose = CalculateRadiationDose(er.Zone.Radiation, CalculateDuration(er.EntranceTime, er.ExitTime)),
+                EmployeeName = string.Join(' ', er.Employee.Name, er.Employee.Surname),
             })
             .ToListAsync();
 
-        return Ok(empolyee);
+        return Ok(employee);
     }
-
-    [HttpGet("employee-radiation/{id}/today")]
-    public async Task<IActionResult> GetEmployeeRadiationToday(int id)
+    
+    private static double CalculateDuration(DateTime entranceTime, DateTime? exitTime)
     {
-        var today = DateTime.UtcNow.Date;
-        var empolyee = await _context.EmployeesRadiations
-            .Where(er => er.EmployeeId == id && er.EntranceTime.Date == today)
-            .Include(er => er.Zone)
-            .Select(er => new
-            {
-                ZoneName = er.Zone.Info,
-                EntryTime = er.EntranceTime,
-                ExitTime = er.ExitTime,
-                Duration = er.ExitTime.HasValue
-                    ? (er.ExitTime.Value - er.EntranceTime).TotalMinutes
-                    : (DateTime.UtcNow - er.EntranceTime).TotalMinutes,
-                RadiationDose = er.Zone.Radiation * ((er.ExitTime.HasValue
-                    ? (er.ExitTime.Value - er.EntranceTime).TotalMinutes
-                    : (DateTime.UtcNow - er.EntranceTime).TotalMinutes) / 60)
-            })
-            .ToListAsync();
-
-        return Ok(empolyee);
+        return exitTime.HasValue
+            ? (exitTime.Value - entranceTime).TotalMinutes
+            : (DateTime.UtcNow - entranceTime).TotalMinutes;
+    }
+    
+    private static double CalculateRadiationDose(double radiation, double duration)
+    {
+        return radiation * (duration / 60);
     }
 }

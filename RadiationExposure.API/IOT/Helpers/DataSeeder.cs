@@ -37,14 +37,14 @@ public class DataSeeder
         _context.Employees.AddRange(employees);
         _context.SaveChanges();
 
-        var entranceFaker = new Faker<EmployeesRadiation>()
+        var entranceFaker = new Faker<EmployeeEntrance>()
             .RuleFor(e => e.EmployeeId, f => f.PickRandom(employees).Id)
             .RuleFor(e => e.ZoneId, f => f.PickRandom(zones).Id)
             .RuleFor(e => e.EntranceTime, f => f.Date.Recent(30))
             .RuleFor(e => e.ExitTime, (f, er) => er.EntranceTime.AddMinutes(f.Random.Double(1, 60)));
 
         var entrances = entranceFaker.Generate(300);
-        _context.EmployeesRadiations.AddRange(entrances);
+        _context.EmployeeEntrance.AddRange(entrances);
 
         _context.SaveChanges();
     }

@@ -1,6 +1,6 @@
 namespace IOT.Models;
 
-public class EmployeesRadiation
+public class EmployeeEntrance
 {
     public int Id { get; set; }
 
