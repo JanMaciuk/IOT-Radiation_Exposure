@@ -16,8 +16,8 @@ export const DrawerMenu = () => {
       icon: <Room />,
     },
     {
-      text: "Workers",
-      link: "/workers",
+      text: "Employees",
+      link: "/employees",
       icon: <Person />,
     },
     {

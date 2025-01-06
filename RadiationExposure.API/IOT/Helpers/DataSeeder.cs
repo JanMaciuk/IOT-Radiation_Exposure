@@ -28,8 +28,8 @@ public class DataSeeder
         };
         _context.Zones.AddRange(zones);
 
-        var employeeFaker = new Faker<Employee>()
-            .RuleFor(e => e.Name, f => f.Name.FullName())
+        var employeeFaker = new Faker<Employee>("pl")
+            .RuleFor(e => e.Name, f => f.Name.FirstName())
             .RuleFor(e => e.Surname, f => f.Name.LastName())
             .RuleFor(e => e.Card, f => f.Random.Long(000_000_000, 999_999_999).ToString());
 

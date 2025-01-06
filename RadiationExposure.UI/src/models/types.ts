@@ -1,11 +1,26 @@
-export type Entrance = {
-  entranceId: string;
-  workerId: string;
-  workerFirstName: string;
-  workerLastName: string;
-  entranceDate: Date;
-  exitDate?: Date;
+export type Employee = {
+  id: string;
+  name: string;
+  surname: string;
+  lastEntranceDate: Date | null;
+  lastZoneId: number | null;
+  lastZoneName: string | null; 
+}
+
+export type Zone = {
+  id: string;
+  name: string;
   radiation: number;
-  zone: string;
-  zoneId: string;
-};
+}
+
+export type Entrance = {
+  id: string;
+  zoneId: number;
+  zoneName: string;
+  employeeName: number;
+  worker: Employee;
+  entryTime: Date;
+  exitTime: Date | null;
+  duration: number; 
+  radiationDose: number;
+}
