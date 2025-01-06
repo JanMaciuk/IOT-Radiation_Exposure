@@ -1,3 +1,4 @@
+using IOT.Data;
 using IOT.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -7,12 +8,29 @@ var builder = WebApplication.CreateBuilder(args);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllers();
-            
-builder.Services.AddDbContext<IOT.Data.AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("IotDb")));
+
+builder.Services.AddNpgsql<AppDbContext>(builder.Configuration.GetConnectionString("IotDb"), null,
+    dbBuilder =>
+    {
+        dbBuilder.UseSnakeCaseNamingConvention();
+        if (builder.Environment.IsDevelopment())
+        {
+            dbBuilder.EnableSensitiveDataLogging();
+        }
+    }
+);
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Default", policy =>
+    {
+        policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddSerilog(config =>
 {
@@ -29,6 +47,7 @@ builder.Services.AddScoped<DataSeeder>();
 var app = builder.Build();
 
 app.UseSerilogRequestLogging();
+app.UseCors("Default");
 
 if (app.Environment.IsDevelopment())
 {
