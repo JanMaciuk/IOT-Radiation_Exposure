@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using IOT.Data;
 using IOT.Helpers;
 using IOT.Mqtt;
@@ -8,7 +9,10 @@ using Serilog.Events;
 var builder = WebApplication.CreateBuilder(args);
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(jsonConfig =>
+{
+    jsonConfig.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+});
 
 builder.Services.AddNpgsql<AppDbContext>(builder.Configuration.GetConnectionString("IotDb"), null,
     dbBuilder =>
@@ -66,6 +70,6 @@ app.MapControllers();
 var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
 seeder.Seed();
-scope.ServiceProvider.GetRequiredService<MqttClient>();
+//scope.ServiceProvider.GetRequiredService<MqttClient>();
 
 app.Run();

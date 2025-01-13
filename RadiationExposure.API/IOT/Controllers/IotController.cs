@@ -20,7 +20,20 @@ public class IotController : ControllerBase
 	[Tags("Zones")]
 	public async Task<ActionResult<Zone>> GetAllZones()
 	{
-		var zones = await _context.Zones.ToListAsync();
+		var zones = await _context.Zones
+			.Select(z => new GetZoneResponse
+			{
+				Id = z.Id,
+				Radiation = Convert.ToDecimal(z.Radiation),
+				ZoneName = z.Info,
+				LastEntrance = z.Entrances
+					.OrderByDescending(e => e.EntranceTime)
+					.Select(e => e.EntranceTime)
+					.FirstOrDefault(),
+				EmployeesInsideNow = z.Entrances.Count(e => e.ExitTime == null),
+			})
+			.ToListAsync();
+		
 		return Ok(zones);
 	}
 
@@ -28,7 +41,9 @@ public class IotController : ControllerBase
 	[Tags("Zones")]
 	public async Task<ActionResult<Zone>> GetZoneById(int id)
 	{
-		var zone = await _context.Zones.FirstOrDefaultAsync(z => z.Id == id);
+		var zone = await _context.Zones
+			.Include(z => z.Entrances)
+			.FirstOrDefaultAsync(z => z.Id == id);
 		if (zone == null)
 		{
 			return NotFound();
@@ -47,7 +62,7 @@ public class IotController : ControllerBase
 				Id = er.Id,
 				ZoneId = er.ZoneId,
 				ZoneName = er.Zone.Info,
-				EmployeeName = er.Employee.Name,
+				EmployeeName = string.Join(' ', er.Employee.Name, er.Employee.Surname),
 				EntryTime = er.EntranceTime,
 				ExitTime = er.ExitTime,
 				Duration = CalculateDuration(er.EntranceTime, er.ExitTime),
@@ -58,8 +73,6 @@ public class IotController : ControllerBase
 
 		return Ok(entrances);
 	}
-	
-	record EmployeeLastEntrance(int EmployeeId, DateTime? LastEntranceDate, int? LastZoneId, string? LastZoneName);
 
 	[HttpGet("employees")]
 	[Tags("Employees")]
@@ -70,7 +83,7 @@ public class IotController : ControllerBase
 			.Where(e => e.EntranceTime == _context.EmployeeEntrance
 				.Where(e2 => e2.EmployeeId == e.EmployeeId)
 				.Max(e2 => e2.EntranceTime))
-			.ToDictionaryAsync(e => e.EmployeeId, e => new EmployeeLastEntrance(e.EmployeeId, e.EntranceTime, e.ZoneId, e.Zone.Info));
+			.ToDictionaryAsync(e => e.EmployeeId, e => new EmployeeLastEntrance(e.EntranceTime, e.ZoneId, e.Zone.Info));
 		
 		var employee = await _context.Employees
 			.Select(e => 
@@ -131,13 +144,15 @@ public class IotController : ControllerBase
 
 	private static double CalculateDuration(DateTime entranceTime, DateTime? exitTime)
 	{
-		return exitTime.HasValue
+		double duration = exitTime.HasValue
 			? (exitTime.Value - entranceTime).TotalMinutes
 			: (DateTime.UtcNow - entranceTime).TotalMinutes;
+		
+		return double.Round(duration, 1, MidpointRounding.AwayFromZero);
 	}
 
 	private static double CalculateRadiationDose(double radiation, double duration)
 	{
-		return radiation * (duration / 60);
+		return double.Round(radiation * (duration / 60), 3, MidpointRounding.AwayFromZero);
 	}
 }

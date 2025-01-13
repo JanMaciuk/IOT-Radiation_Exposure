@@ -9,8 +9,10 @@ export type Employee = {
 
 export type Zone = {
   id: string;
-  name: string;
+  zoneName: string;
   radiation: number;
+  lastEntrance: Date | null;
+  employeesInsideNow: number;
 }
 
 export type Entrance = {

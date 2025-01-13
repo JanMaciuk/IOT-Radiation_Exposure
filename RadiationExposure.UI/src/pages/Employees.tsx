@@ -7,6 +7,7 @@ import {
 } from 'material-react-table';
 import { Employee } from '../models/types';
 import { PageHeader } from '../components/PageHeader';
+import { formatDateCell } from '../utils/formatters';
 
 export const Employees = () => {
   const { data: employeeList, isLoading, error } = useGetEmployees();
@@ -26,12 +27,13 @@ export const Employees = () => {
       {
         accessorKey: 'lastZoneName',
         header: 'Last entered zone',
-        size: 200
+        size: 200,
       },
       {
         accessorKey: 'lastEntranceDate',
         header: 'Last entrance',
-        size: 300
+        size: 300,
+        Cell: ({ renderedCellValue }) => renderedCellValue ? formatDateCell(renderedCellValue) : 'No entrances'
       }
     ], []
   )
