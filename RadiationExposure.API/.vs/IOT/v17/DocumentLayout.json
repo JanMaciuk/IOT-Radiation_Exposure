@@ -7,12 +7,36 @@
       "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\helpers\\dataseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\helpers\\dataseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\mqtt\\mqttclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\mqtt\\mqttclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\mqtt\\mqttsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\mqtt\\mqttsettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\iot.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\iot.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\mqtt\\entrancelog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\mqtt\\entrancelog.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\helpers\\dataseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\helpers\\dataseeder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\models\\employeeentrance.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -49,18 +73,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\data\\appdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\iot.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\iot.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|c:\\users\\jj_sl\\documents\\vs2022\\iot-radiation_exposure\\radiationexposure.api\\iot\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D8BB4A96-C17B-4431-9D5C-74855647DD60}|IOT\\IOT.csproj|solutionrelative:iot\\models\\employee.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -70,7 +82,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 205,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -82,33 +94,72 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "MqttSettings.cs",
+              "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Mqtt\\MqttSettings.cs",
+              "RelativeDocumentMoniker": "IOT\\Mqtt\\MqttSettings.cs",
+              "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Mqtt\\MqttSettings.cs",
+              "RelativeToolTip": "IOT\\Mqtt\\MqttSettings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:30:27.02Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "appsettings.Development.json",
+              "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\appsettings.Development.json",
+              "RelativeDocumentMoniker": "IOT\\appsettings.Development.json",
+              "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\appsettings.Development.json",
+              "RelativeToolTip": "IOT\\appsettings.Development.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-01-14T14:12:48.172Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "EntranceLog.cs",
+              "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Mqtt\\EntranceLog.cs",
+              "RelativeDocumentMoniker": "IOT\\Mqtt\\EntranceLog.cs",
+              "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Mqtt\\EntranceLog.cs",
+              "RelativeToolTip": "IOT\\Mqtt\\EntranceLog.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-14T14:11:59.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Program.cs",
               "RelativeDocumentMoniker": "IOT\\Program.cs",
               "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Program.cs",
               "RelativeToolTip": "IOT\\Program.cs",
-              "ViewState": "AgIAADgAAAAAAAAAAAAAwEQAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAAADkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-12T21:39:25.212Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "MqttClient.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Mqtt\\MqttClient.cs",
               "RelativeDocumentMoniker": "IOT\\Mqtt\\MqttClient.cs",
               "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Mqtt\\MqttClient.cs",
               "RelativeToolTip": "IOT\\Mqtt\\MqttClient.cs",
-              "ViewState": "AgIAAFIAAAAAAAAAAAAAwCkAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAABIAAAAAAAAAAAAAwB8AAAAwAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-12T20:38:25.386Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "20250104222432_Init.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Migrations\\20250104222432_Init.cs",
               "RelativeDocumentMoniker": "IOT\\Migrations\\20250104222432_Init.cs",
@@ -120,7 +171,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 16,
               "Title": "log20250112.txt",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\logs\\log20250112.txt",
               "RelativeDocumentMoniker": "IOT\\logs\\log20250112.txt",
@@ -132,7 +183,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 17,
               "Title": "AppDbContext.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Data\\AppDbContext.cs",
               "RelativeDocumentMoniker": "IOT\\Data\\AppDbContext.cs",
@@ -144,19 +195,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 3,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\appsettings.json",
               "RelativeDocumentMoniker": "IOT\\appsettings.json",
               "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\appsettings.json",
               "RelativeToolTip": "IOT\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-01-12T20:17:13.447Z"
+              "WhenOpened": "2025-01-12T20:17:13.447Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 5,
               "Title": "IOT.http",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\IOT.http",
               "RelativeDocumentMoniker": "IOT\\IOT.http",
@@ -164,11 +216,12 @@
               "RelativeToolTip": "IOT\\IOT.http",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2025-01-12T20:17:11.702Z"
+              "WhenOpened": "2025-01-12T20:17:11.702Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 11,
               "Title": "IotController.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Controllers\\IotController.cs",
               "RelativeDocumentMoniker": "IOT\\Controllers\\IotController.cs",
@@ -180,7 +233,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 10,
               "Title": "Zone.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Models\\Zone.cs",
               "RelativeDocumentMoniker": "IOT\\Models\\Zone.cs",
@@ -192,7 +245,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 9,
               "Title": "EmployeeEntrance.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Models\\EmployeeEntrance.cs",
               "RelativeDocumentMoniker": "IOT\\Models\\EmployeeEntrance.cs",
@@ -204,19 +257,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 7,
               "Title": "Employee.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Models\\Employee.cs",
               "RelativeDocumentMoniker": "IOT\\Models\\Employee.cs",
               "ToolTip": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Models\\Employee.cs",
               "RelativeToolTip": "IOT\\Models\\Employee.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAcAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-12T20:01:50.427Z"
+              "WhenOpened": "2025-01-12T20:01:50.427Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 8,
               "Title": "DataSeeder.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Helpers\\DataSeeder.cs",
               "RelativeDocumentMoniker": "IOT\\Helpers\\DataSeeder.cs",
@@ -224,12 +278,11 @@
               "RelativeToolTip": "IOT\\Helpers\\DataSeeder.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAXAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-12T20:01:39.999Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-12T20:01:39.999Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 12,
               "Title": "GetZoneResponse.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Dto\\GetZoneResponse.cs",
               "RelativeDocumentMoniker": "IOT\\Dto\\GetZoneResponse.cs",
@@ -241,7 +294,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 13,
               "Title": "GetEntranceResponse.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Dto\\GetEntranceResponse.cs",
               "RelativeDocumentMoniker": "IOT\\Dto\\GetEntranceResponse.cs",
@@ -253,7 +306,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 14,
               "Title": "GetEmployeeResponse.cs",
               "DocumentMoniker": "C:\\Users\\jj_sl\\Documents\\VS2022\\IOT-Radiation_Exposure\\RadiationExposure.API\\IOT\\Dto\\GetEmployeeResponse.cs",
               "RelativeDocumentMoniker": "IOT\\Dto\\GetEmployeeResponse.cs",

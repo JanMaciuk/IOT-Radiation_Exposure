@@ -1,10 +1,11 @@
 ﻿using IOT.Data;
 using MQTTnet;
 using System.Text.Json;
-using IOT.Data;
 using IOT.Models;
 using System.Text;
 using System.Diagnostics;
+using Microsoft.Extensions.Options;
+
 
 namespace IOT.Mqtt
 {
@@ -12,15 +13,14 @@ namespace IOT.Mqtt
     {
         private readonly AppDbContext _context;
         private IMqttClient _mqttClient;
+        private MqttSettings _settings;
 
 
-        public MqttClient(AppDbContext context)
+        public MqttClient(AppDbContext context, IOptions<MqttSettings> settings)
         {
             _context = context;
-
-            var broker = "10.108.33.121";
-            var port= 1883; // default mqtt port
-            var clientId = "T0";
+            //_settings = settings.Value;
+            _settings = settings.Value ?? throw new ArgumentNullException(nameof(settings));
 
 
             var factory = new MqttClientFactory();
@@ -28,8 +28,8 @@ namespace IOT.Mqtt
             _mqttClient = factory.CreateMqttClient();
 
             var options = new MqttClientOptionsBuilder()
-                .WithTcpServer(broker, port) 
-                .WithClientId(clientId)
+                .WithTcpServer(_settings.BrokerAddress, _settings.Port) 
+                .WithClientId(_settings.ClientId)
                 .WithCleanSession()
                 .Build();
             //.WithCredentials(username, password)
@@ -70,7 +70,6 @@ namespace IOT.Mqtt
         }
 
 
-
         private async Task OnMessageReceived(MqttApplicationMessageReceivedEventArgs args)
         {
             try
@@ -78,33 +77,14 @@ namespace IOT.Mqtt
                 var payload = Encoding.UTF8.GetString(args.ApplicationMessage.Payload);
                 var log = JsonSerializer.Deserialize<EntranceLog>(payload);
 
-                if (log != null)
+                if (log == null || string.IsNullOrEmpty(log.CardId))
                 {
-                    //TODO check if log.EmployeeId, log.ZoneId exists in the database
-                    //TODO check if log.EmployeeId, log.ZoneId log.Timestamp are not null
-
-                    var dbLog = _context.EmployeeEntrance
-                        .FirstOrDefault(e => e.EmployeeId == log.EmployeeId && e.ExitTime == null);
-
-                    if (log != null)
-                    {
-                        dbLog.ExitTime = log.Timestamp;
-                        _context.EmployeeEntrance.Update(dbLog);
-                    }
-                    else {
-                        var newLog = new EmployeeEntrance() {
-                            EmployeeId = log.EmployeeId,
-                            ZoneId = log.ZoneId,
-                            EntranceTime = log.Timestamp,
-                            ExitTime = null
-                        };
-
-                        _context.EmployeeEntrance.Add(newLog);
-                    }
-
-
-                    await _context.SaveChangesAsync();
+                    Debug.WriteLine("Invalid or null log received.");
+                    return;
                 }
+
+                await ProcessMessage(log);
+
             }
             catch (Exception ex)
             {
@@ -112,11 +92,45 @@ namespace IOT.Mqtt
             }
         }
 
-        public class EntranceLog
-        {
-            public int EmployeeId { get; set; }
-            public int ZoneId { get; set; }
-            public DateTime Timestamp { get; set; }
+        private async Task ProcessMessage(EntranceLog log) {
+
+            var employee = _context.Employees.FirstOrDefault(e => e.Card == log.CardId);
+            var zone = _context.Zones.FirstOrDefault(z => z.Id == log.ZoneId);
+
+            if (employee == null)
+            {
+                Debug.WriteLine($"Employee not found for CardId: {log.CardId}");
+                return;
+            }
+
+            if (zone == null)
+            {
+                Debug.WriteLine($"Zone not found for ZoneId: {log.ZoneId}");
+                return;
+            }
+
+            var existingLog = _context.EmployeeEntrance
+               .FirstOrDefault(e => e.EmployeeId == employee.Id && e.ExitTime == null);
+
+            if (existingLog != null)
+            {
+                existingLog.ExitTime = log.Timestamp;
+                _context.EmployeeEntrance.Update(existingLog);
+            }
+            else
+            {
+                var newLog = new EmployeeEntrance
+                {
+                    EmployeeId = employee.Id,
+                    ZoneId = log.ZoneId,
+                    EntranceTime = log.Timestamp,
+                    ExitTime = null
+                };
+
+                _context.EmployeeEntrance.Add(newLog);
+            }
+
+            await _context.SaveChangesAsync();     
         }
     }
 }

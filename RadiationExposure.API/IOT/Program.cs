@@ -46,6 +46,7 @@ builder.Services.AddSerilog(config =>
         .WriteTo.Console(restrictedToMinimumLevel: LogEventLevel.Information)
         .Enrich.FromLogContext();
 });
+builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttSettings"));
 
 builder.Services.AddScoped<DataSeeder>();
 builder.Services.AddScoped<MqttClient>();
