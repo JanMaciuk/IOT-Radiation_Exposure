@@ -14,16 +14,15 @@ builder.Services.AddControllers().AddJsonOptions(jsonConfig =>
     jsonConfig.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
-builder.Services.AddNpgsql<AppDbContext>(builder.Configuration.GetConnectionString("IotDb"), null,
-    dbBuilder =>
+builder.Services.AddDbContext<AppDbContext>(options =>
+{
+    options.UseSqlite(builder.Configuration.GetConnectionString("IotDb"));
+    options.UseSnakeCaseNamingConvention();
+    if (builder.Environment.IsDevelopment())
     {
-        dbBuilder.UseSnakeCaseNamingConvention();
-        if (builder.Environment.IsDevelopment())
-        {
-            dbBuilder.EnableSensitiveDataLogging();
-        }
+        options.EnableSensitiveDataLogging(); 
     }
-);
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
