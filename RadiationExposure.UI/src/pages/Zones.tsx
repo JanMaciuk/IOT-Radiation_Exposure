@@ -1,14 +1,13 @@
 import { MRT_ColumnDef, useMaterialReactTable, MaterialReactTable } from 'material-react-table';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 import { PageHeader } from '../components/PageHeader';
 import { Zone } from '../models/types';
 import { useGetZones } from '../hooks/useGetZones';
-import { useGetZoneEntrances } from '../hooks/useGetZoneEntrances';
 import { EntrancesTable } from '../components/EntrancesTable';
 import { formatDateCell } from '../utils/formatters';
 
 export const Zones = () => {
-  const { data: zoneList, isLoading, error } = useGetZones();
+  const { data: zoneList } = useGetZones();
 
   const columns = useMemo<MRT_ColumnDef<Zone>[]>(
     () => [

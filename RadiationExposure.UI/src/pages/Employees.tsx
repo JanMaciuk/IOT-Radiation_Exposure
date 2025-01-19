@@ -10,7 +10,7 @@ import { PageHeader } from '../components/PageHeader';
 import { formatDateCell } from '../utils/formatters';
 
 export const Employees = () => {
-  const { data: employeeList, isLoading, error } = useGetEmployees();
+  const { data: employeeList } = useGetEmployees();
 
   const columns = useMemo<MRT_ColumnDef<Employee>[]>(
     () => [
