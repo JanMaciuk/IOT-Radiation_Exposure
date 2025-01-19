@@ -17,7 +17,6 @@ builder.Services.AddControllers().AddJsonOptions(jsonConfig =>
 builder.Services.AddDbContext<AppDbContext>(options =>
 {
     options.UseSqlite(builder.Configuration.GetConnectionString("IotDb"));
-    options.UseSnakeCaseNamingConvention();
     if (builder.Environment.IsDevelopment())
     {
         options.EnableSensitiveDataLogging(); 
