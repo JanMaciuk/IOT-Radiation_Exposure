@@ -113,7 +113,7 @@ namespace IOT.Mqtt
                 Debug.WriteLine($"Zone not found for ZoneId: {log.ZoneId}");
                 return;
             }
-            var exceededRadiation = employeeExceededRadiationDoes(employee.Id);
+            var exceededRadiation = IsEmployeeRadiationDoseExceeded(employee.Id);
             var response = new EntranceResponse
             {
                 CardId = log.CardId,
@@ -156,7 +156,7 @@ namespace IOT.Mqtt
             await _context.SaveChangesAsync();     
         }
 
-        public bool employeeExceededRadiationDoes(int employee_id){
+        public bool IsEmployeeRadiationDoseExceeded(int employee_id){
             var employee = _context.Employees.FirstOrDefault(e => e.Id == employee_id);
 
             var entrances = _context.EmployeeEntrance
