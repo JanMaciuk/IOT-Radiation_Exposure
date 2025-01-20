@@ -19,9 +19,16 @@ zonesRadiation = [
     ("B", 0.2),
     ("C", 0.3),
     ("D", 0.4),
+    ("E", 0.5),
+    ("F", 0.6),
+    ("G", 0.7),
+    ("H", 0.8),
+    ("I", 0.9),
+    ("J", 1.0),
 ]
 fontPath = "./lib/oled/Font.ttf"
 currentZoneIndex = 0
+isMQTTconfigured = False
 last_state_left = GPIO.input(encoderLeft)
 last_state_right = GPIO.input(encoderRight)
 MIFAREReader = MFRC522()
@@ -36,11 +43,13 @@ def encoderEvent(channel):
     current_state_left = GPIO.input(encoderLeft)
     current_state_right = GPIO.input(encoderRight)
 
-    if (last_state_left == 1 and current_state_left == 0 and currentZoneIndex < len(zonesRadiation) - 1):
-        currentZoneIndex += 1  # go to next zone
-    if (last_state_right == 1 and current_state_right == 0 and currentZoneIndex > 0):
+    if (last_state_left == 1 and current_state_left == 0 and currentZoneIndex > 0):
         currentZoneIndex -= 1  # go to previous zone
-    displayCurrentZone()
+        displayCurrentZone()
+    if (last_state_right == 1 and current_state_right == 0 and currentZoneIndex < len(zonesRadiation) - 1):
+        currentZoneIndex += 1  # go to next zone
+        displayCurrentZone()
+    
     last_state_left = current_state_left
     last_state_right = current_state_right
 
@@ -56,10 +65,10 @@ def displayCurrentZone():
 
     zone, radiation = zonesRadiation[currentZoneIndex]
     line1 = f"Zone: {zone}"
-    line2 = f"Radiation: {radiation} mSv/h"
+    line2 = f"Rad: {radiation} mSv/h"
 
     draw.text((0, 0), line1, font=font, fill="BLACK")
-    draw.text((0, screenFontSize + 1), line2, font=font, fill="BLACK")
+    draw.text((0, screenFontSize + 2), line2, font=font, fill="BLACK")
     disp.ShowImage(image, 0, 0)
 
 
@@ -77,16 +86,25 @@ def rfidRead():
         print(f"Error reading card: {e}")
         return None
 
-def sendUID(uid, timestamp):
-    """Sends the UID and timestamp to the MQTT broker"""
-    print(f"UID: {uid}, Timestamp: {timestamp}, Zone ID: {currentZoneIndex}")
-    
-    mqtt_client.sendLog(uid, currentZoneIndex)
+def sendUID(uid):
+    """Sends the UID and current zone to the MQTT broker"""
+    uid = ''.join(map(str, uid))
+    print(f"UID: {uid}, Zone ID: {currentZoneIndex}")
+    try:
+        mqtt_client.sendLog(uid, currentZoneIndex)
+    except Exception as e:
+        print("An exception occured while sending MQTT log:")
+        print(e)
 
 def receiveResponse(uid):
     """Receives a response, if the user has not exceeded the radiation limit."""
-    
-    return mqtt_client.wait_for_access_granted(uid)
+    try:
+        return mqtt_client.wait_for_access_granted(uid)
+    except Exception as e:
+        print("An exception occured while receiving an MQTT response:")
+        print(e)
+        return False
+
 
 def buzz(duration=0.1):
     """Triggers the buzzer for the specified duration."""
@@ -104,18 +122,31 @@ def ledColor(duration=1, color=(255, 0, 0)):
 
 def cardWasRead(uid):
     """Handles actions when a card is successfully read."""
-    sendUID(uid)
     buzz()
+    if not isMQTTconfigured:
+        ledColor(color=(255, 255, 0))
+        return
+    sendUID(uid)
     if receiveResponse(uid):
         ledColor(color=(0, 255, 0))
     else:
+        buzz()
         ledColor(color=(255, 0, 0))
+        buzz()
 
 def mainLoop():
     """Main loop for continuously reading RFID cards."""
-    global fontPath
+    global fontPath, isMQTTconfigured
     GPIO.add_event_detect(encoderLeft, GPIO.FALLING, callback=encoderEvent, bouncetime=200)
     GPIO.add_event_detect(encoderRight, GPIO.FALLING, callback=encoderEvent, bouncetime=200)
+
+    try:
+        mqtt_client.connect()
+        isMQTTconfigured = True
+    except Exception as e:
+        print("MQTT: failed to connect")
+        print(e)
+
     #Try to find a font file:
     if not os.path.exists(fontPath):
         print("Font file not found at: " + fontPath + ". Checking another location.")
@@ -144,7 +175,6 @@ def mainLoop():
         time.sleep(0.5)
 
 if __name__ == "__main__":
-    mqtt_client.connect()
     try:
         mainLoop()
     except KeyboardInterrupt:
