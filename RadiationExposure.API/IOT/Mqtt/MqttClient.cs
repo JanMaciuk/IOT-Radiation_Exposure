@@ -58,8 +58,8 @@ namespace IOT.Mqtt
                 {
                     Debug.WriteLine("Connected to MQTT successfully.");
 
-                    await _mqttClient.SubscribeAsync(_settings.Topic);
-                    Debug.WriteLine($"Subscribed to topic: {_settings.Topic}");
+                    await _mqttClient.SubscribeAsync(_settings.TopicLogs);
+                    Debug.WriteLine($"Subscribed to topic: {_settings.TopicLogs}");
 
                     _mqttClient.ApplicationMessageReceivedAsync += OnMessageReceived;
                 }
@@ -124,10 +124,10 @@ namespace IOT.Mqtt
             var jsonPayload = JsonSerializer.Serialize(response);
 
             var message = new MqttApplicationMessageBuilder()
-                .WithTopic(_settings.Topic)
+                .WithTopic(_settings.TopicResponse+log.RaspberryId)
                 .WithPayload(Encoding.UTF8.GetBytes(jsonPayload))
-                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce) //
-                .WithRetainFlag() //
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce)
+                .WithRetainFlag()
                 .Build();
 
             await _mqttClient.PublishAsync(message);
