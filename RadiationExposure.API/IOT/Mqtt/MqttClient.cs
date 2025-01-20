@@ -5,6 +5,11 @@ using IOT.Models;
 using System.Text;
 using System.Diagnostics;
 using Microsoft.Extensions.Options;
+using Serilog;
+using IOT.Dto;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.EntityFrameworkCore;
+using MQTTnet.Protocol;
 
 
 namespace IOT.Mqtt
@@ -53,8 +58,8 @@ namespace IOT.Mqtt
                 {
                     Debug.WriteLine("Connected to MQTT successfully.");
 
-                    await _mqttClient.SubscribeAsync("iot/entrance_logs");
-                    Debug.WriteLine("Subscribed to topic: iot/entrance_logs");
+                    await _mqttClient.SubscribeAsync(_settings.Topic);
+                    Debug.WriteLine($"Subscribed to topic: {_settings.Topic}");
 
                     _mqttClient.ApplicationMessageReceivedAsync += OnMessageReceived;
                 }
@@ -108,6 +113,24 @@ namespace IOT.Mqtt
                 Debug.WriteLine($"Zone not found for ZoneId: {log.ZoneId}");
                 return;
             }
+            var exceededRadiation = employeeExceededRadiationDoes(employee.Id);
+            var response = new EntranceResponse
+            {
+                CardId = log.CardId,
+                ZoneId = log.ZoneId,
+                AccessGranted = !exceededRadiation
+            };
+
+            var jsonPayload = JsonSerializer.Serialize(response);
+
+            var message = new MqttApplicationMessageBuilder()
+                .WithTopic(_settings.Topic)
+                .WithPayload(Encoding.UTF8.GetBytes(jsonPayload))
+                .WithQualityOfServiceLevel(MqttQualityOfServiceLevel.AtLeastOnce) //
+                .WithRetainFlag() //
+                .Build();
+
+            await _mqttClient.PublishAsync(message);
 
             var existingLog = _context.EmployeeEntrance
                .FirstOrDefault(e => e.EmployeeId == employee.Id && e.ExitTime == null);
@@ -131,6 +154,42 @@ namespace IOT.Mqtt
             }
 
             await _context.SaveChangesAsync();     
+        }
+
+        public bool employeeExceededRadiationDoes(int employee_id){
+            var employee = _context.Employees.FirstOrDefault(e => e.Id == employee_id);
+
+            var entrances = _context.EmployeeEntrance
+                .Where(e => e.EmployeeId == employee_id && e.EntranceTime >= DateTime.UtcNow.AddHours(-24))
+                .Include(e => e.Zone)
+                .ToList();
+
+            double radiation = 0.0d; 
+
+            foreach (var entrance in entrances) {
+                radiation += CalculateRadiationDose(entrance.Zone.Radiation,CalculateDuration(entrance.EntranceTime, entrance.ExitTime));
+            }
+
+            if (radiation > 1_000_000.0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public double CalculateDuration(DateTime entranceTime, DateTime? exitTime)
+        {
+            double duration = exitTime.HasValue
+                ? (exitTime.Value - entranceTime).TotalMinutes
+                : (DateTime.UtcNow - entranceTime).TotalMinutes;
+
+            return double.Round(duration, 1, MidpointRounding.AwayFromZero);
+        }
+
+        public double CalculateRadiationDose(double radiation, double duration)
+        {
+            return double.Round(radiation * (duration / 60), 3, MidpointRounding.AwayFromZero);
         }
     }
 }
