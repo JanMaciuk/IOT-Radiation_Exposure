@@ -19,6 +19,12 @@ zonesRadiation = [
     ("B", 0.2),
     ("C", 0.3),
     ("D", 0.4),
+    ("E", 0.5),
+    ("F", 0.6),
+    ("G", 0.7),
+    ("H", 0.8),
+    ("I", 0.9),
+    ("J", 1.0),
 ]
 fontPath = "./lib/oled/Font.ttf"
 currentZoneIndex = 0
@@ -62,7 +68,7 @@ def displayCurrentZone():
     line2 = f"Rad: {radiation} mSv/h"
 
     draw.text((0, 0), line1, font=font, fill="BLACK")
-    draw.text((0, screenFontSize + 1), line2, font=font, fill="BLACK")
+    draw.text((0, screenFontSize + 2), line2, font=font, fill="BLACK")
     disp.ShowImage(image, 0, 0)
 
 
@@ -81,28 +87,22 @@ def rfidRead():
         return None
 
 def sendUID(uid):
-    """Sends the UID and timestamp to the MQTT broker"""
+    """Sends the UID and current zone to the MQTT broker"""
     uid = ''.join(map(str, uid))
     print(f"UID: {uid}, Zone ID: {currentZoneIndex}")
-    if not isMQTTconfigured:
-        return
-    
     try:
         mqtt_client.sendLog(uid, currentZoneIndex)
-    except Exception:
+    except Exception as e:
         print("An exception occured while sending MQTT log:")
-        print(Exception)
+        print(e)
 
 def receiveResponse(uid):
     """Receives a response, if the user has not exceeded the radiation limit."""
-    if not isMQTTconfigured:
-        return True
-    
     try:
         return mqtt_client.wait_for_access_granted(uid)
-    except Exception:
+    except Exception as e:
         print("An exception occured while receiving an MQTT response:")
-        print(Exception)
+        print(e)
         return False
 
 
@@ -122,12 +122,17 @@ def ledColor(duration=1, color=(255, 0, 0)):
 
 def cardWasRead(uid):
     """Handles actions when a card is successfully read."""
-    sendUID(uid)
     buzz()
+    if not isMQTTconfigured:
+        ledColor(color=(255, 255, 0))
+        return
+    sendUID(uid)
     if receiveResponse(uid):
         ledColor(color=(0, 255, 0))
     else:
+        buzz()
         ledColor(color=(255, 0, 0))
+        buzz()
 
 def mainLoop():
     """Main loop for continuously reading RFID cards."""
@@ -138,8 +143,9 @@ def mainLoop():
     try:
         mqtt_client.connect()
         isMQTTconfigured = True
-    except:
+    except Exception as e:
         print("MQTT: failed to connect")
+        print(e)
 
     #Try to find a font file:
     if not os.path.exists(fontPath):
