@@ -4,7 +4,9 @@ export type Employee = {
   surname: string;
   lastEntranceDate: Date | null;
   lastZoneId: number | null;
-  lastZoneName: string | null; 
+  lastZoneName: string | null;
+  radiationDoseInLastMonth: number;
+  radiationDoseInLastWeek: number;
 }
 
 export type Zone = {

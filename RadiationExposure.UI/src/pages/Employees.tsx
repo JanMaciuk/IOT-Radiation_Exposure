@@ -34,7 +34,17 @@ export const Employees = () => {
         header: 'Last entrance',
         size: 300,
         Cell: ({ renderedCellValue }) => renderedCellValue ? formatDateCell(renderedCellValue) : 'No entrances'
-      }
+      },
+      {
+        accessorKey: 'radiationDoseInLastWeek',
+        header: 'Radiation dose in last week',
+        size: 150,
+      },
+      {
+        accessorKey: 'radiationDoseInLastMonth',
+        header: 'Radiation dose in last month',
+        size: 150,
+      },
     ], []
   )
 
