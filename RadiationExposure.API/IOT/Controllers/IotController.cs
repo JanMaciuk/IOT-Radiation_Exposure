@@ -6,6 +6,13 @@ using IOT.Models;
 
 namespace IOT.Controllers;
 
+record EmployeeStats 
+{
+	public DateTime EntranceTime { get; init; }
+	public DateTime ExitTime { get; init; }
+	public double Radiation { get; init; }
+}
+
 [ApiController]
 public class IotController : ControllerBase
 {
@@ -85,17 +92,44 @@ public class IotController : ControllerBase
 				.Max(e2 => e2.EntranceTime))
 			.ToDictionaryAsync(e => e.EmployeeId, e => new EmployeeLastEntrance(e.EntranceTime, e.ZoneId, e.Zone.Info));
 		
+		var weekAgoDate = DateTime.UtcNow.AddDays(-7);
+		var monthAgoDate = DateTime.UtcNow.AddMonths(-1);
+		
 		var employee = await _context.Employees
-			.Select(e => 
-			new GetEmployeeResponse
-			{
-				Id = e.Id,
-				Name = e.Name,
-				Surname = e.Surname,
-				LastEntranceDate = employeeLastEntrancesDict.ContainsKey(e.Id) ? employeeLastEntrancesDict[e.Id].LastEntranceDate : null,
-				LastZoneId = employeeLastEntrancesDict.ContainsKey(e.Id) ? employeeLastEntrancesDict[e.Id].LastZoneId : null,
-				LastZoneName = employeeLastEntrancesDict.ContainsKey(e.Id) ? employeeLastEntrancesDict[e.Id].LastZoneName : null,
-			})
+			.Select(e =>
+				new GetEmployeeResponse
+				{
+					Id = e.Id,
+					Name = e.Name,
+					Surname = e.Surname,
+					LastEntranceDate = employeeLastEntrancesDict.ContainsKey(e.Id)
+						? employeeLastEntrancesDict[e.Id].LastEntranceDate
+						: null,
+					LastZoneId = employeeLastEntrancesDict.ContainsKey(e.Id)
+						? employeeLastEntrancesDict[e.Id].LastZoneId
+						: null,
+					LastZoneName = employeeLastEntrancesDict.ContainsKey(e.Id)
+						? employeeLastEntrancesDict[e.Id].LastZoneName
+						: null,
+					RadiationDoseInLastMonth = e.Entrances
+						.Where(ee => ee.EntranceTime >= monthAgoDate && ee.ExitTime != null)
+						.Select(ee => new EmployeeStats 
+						{
+							Radiation = ee.Zone.Radiation,
+							ExitTime = ee.ExitTime.Value,
+							EntranceTime = ee.EntranceTime,
+						})
+						.Sum(ee => CalculateRadiationDose(ee.Radiation, CalculateDuration(ee.EntranceTime, ee.ExitTime))),
+					RadiationDoseInLastWeek = e.Entrances
+						.Where(ee => ee.EntranceTime >= weekAgoDate && ee.ExitTime != null)
+						.Select(ee => new EmployeeStats 
+						{
+							Radiation = ee.Zone.Radiation,
+							ExitTime = ee.ExitTime.Value,
+							EntranceTime = ee.EntranceTime,
+						})			
+						.Sum(ee => CalculateRadiationDose(ee.Radiation, CalculateDuration(ee.EntranceTime, ee.ExitTime))),
+				})
 			.ToListAsync();
 		return Ok(employee);
 	}

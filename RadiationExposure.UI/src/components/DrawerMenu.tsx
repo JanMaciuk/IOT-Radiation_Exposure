@@ -28,12 +28,15 @@ export const DrawerMenu = () => {
   ];
 
   return (
-    <Box className='sticky w-32 p-4 mt-12 min-h-screen'>
-      <List className="flex flex-col">
-        {navElements.map((navElement) => (
-          <NavElement key={navElement.text} {...navElement} />
-        ))}
-      </List>
-    </Box>
+    <nav>
+      <header className='text-2xl font-bold p-4'>RadiationExp.</header>
+      <Box className='sticky w-32 p-4 mt-8 min-h-screen'>
+        <List className="flex flex-col">
+          {navElements.map((navElement) => (
+            <NavElement key={navElement.text} {...navElement} />
+          ))}
+        </List>
+      </Box>
+    </nav>
   );
 };

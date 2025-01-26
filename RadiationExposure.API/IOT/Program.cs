@@ -8,7 +8,6 @@ using Serilog.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 
-AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 builder.Services.AddControllers().AddJsonOptions(jsonConfig =>
 {
     jsonConfig.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
