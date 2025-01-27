@@ -3,7 +3,8 @@ import json
 import threading
 from datetime import datetime
 
-broker: str = "10.108.33.102"
+broker: str = "10.108.33.101"
+port = 1883
 rasberry_id: int = 0
 card_channel_name: str = "iot/entrance_logs"
 response_channel_name: str = f"iot/entrance_response/{rasberry_id}"
@@ -26,7 +27,7 @@ def process_message(client, userdata, message):
     global entrance_response
     with condition:
         print(f"Otrzymano wiadomość: {message.payload.decode()} na temat: {message.topic}")
-        entrance_response.append(json.loads(message.payload.decode()))
+        entrance_response = json.loads(message.payload.decode())
         condition.notify_all() 
 
 
@@ -40,7 +41,7 @@ def wait_for_access_granted(cardId: str) -> bool:
         return False
 
 def connect():
-    client.connect(broker)
+    client.connect(broker,port=port)
     print("connected")
     client.on_message = process_message
     client.subscribe(response_channel_name)
@@ -58,6 +59,8 @@ def sendLog(card_id: str, zone_id: int):
         "RasberryId": rasberry_id
     }
     client.publish(card_channel_name, json.dumps(entrance_log))
+    global entrance_response
+    entrance_response = BLANK_RESPONSE
 
 if __name__ == "__main__":
     connect()
