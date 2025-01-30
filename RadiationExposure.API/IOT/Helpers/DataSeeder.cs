@@ -22,9 +22,16 @@ public class DataSeeder
 
         var zones = new List<Zone>
         {
-            new Zone { Info = "Zone 32b", Radiation = 0.1f },
-            new Zone { Info = "Zone 36z", Radiation = 0.35f },
-            new Zone { Info = "Zone 12a", Radiation = 0.2f },
+            new Zone { Info = "A", Radiation = 0.1f },
+            new Zone { Info = "B", Radiation = 0.2f },
+            new Zone { Info = "C", Radiation = 0.3f },
+            new Zone { Info = "D", Radiation = 0.4f },
+            new Zone { Info = "E", Radiation = 0.5f },
+            new Zone { Info = "F", Radiation = 0.6f },
+            new Zone { Info = "G", Radiation = 0.7f },
+            new Zone { Info = "H", Radiation = 0.8f },
+            new Zone { Info = "I", Radiation = 0.9f },
+            new Zone { Info = "J", Radiation = 1.0f },
         };
         _context.Zones.AddRange(zones);
 

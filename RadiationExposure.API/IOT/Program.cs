@@ -3,6 +3,7 @@ using IOT.Data;
 using IOT.Helpers;
 using IOT.Mqtt;
 using Microsoft.EntityFrameworkCore;
+using MQTTnet.Server;
 using Serilog;
 using Serilog.Events;
 
@@ -48,6 +49,7 @@ builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttS
 
 builder.Services.AddScoped<DataSeeder>();
 builder.Services.AddScoped<MqttClient>();
+builder.Services.AddScoped<MqttServerq>();
 
 var app = builder.Build();
 
@@ -67,8 +69,12 @@ app.UseAuthorization();
 app.MapControllers();
 
 var scope = app.Services.CreateScope();
-var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
-seeder.Seed();
+    var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
+    seeder.Seed();
 //scope.ServiceProvider.GetRequiredService<MqttClient>();
+
+var  mqttServer =  scope.ServiceProvider.GetRequiredService<MqttServerq>();
+await mqttServer.StartAsync();
+
 
 app.Run();
