@@ -34,8 +34,27 @@ namespace IOT.Mqtt
             _mqttClient = factorycli.CreateMqttClient();
 
             _mqttServer.InterceptingPublishAsync += HandleIncomingMessage;
+            _mqttServer.ValidatingConnectionAsync += Server_ValidatingConnectionAsync;
             _mqttServer.ClientConnectedAsync += HandleClientConnected;
             _mqttServer.ClientDisconnectedAsync += HandleClientDisconnected;
+        }
+
+        Task Server_ValidatingConnectionAsync(ValidatingConnectionEventArgs arg)
+        {
+            if (!string.IsNullOrWhiteSpace(arg.UserName) && !string.IsNullOrWhiteSpace(arg.Password))
+            {
+                Console.WriteLine(arg.UserName);
+                Console.WriteLine(arg.Password);
+                if (arg.UserName != "admin" || arg.Password != "admin" )
+                {
+                    arg.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadUserNameOrPassword;
+                    return Task.CompletedTask;
+                }
+                arg.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.Success;
+                return Task.CompletedTask;
+            }
+            arg.ReasonCode = MQTTnet.Protocol.MqttConnectReasonCode.BadAuthenticationMethod;
+            return Task.CompletedTask;
         }
 
         public async Task StartAsync()

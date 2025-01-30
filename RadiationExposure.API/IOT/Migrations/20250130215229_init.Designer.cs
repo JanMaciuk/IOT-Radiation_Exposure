@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace IOT.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250130181130_init")]
+    [Migration("20250130215229_init")]
     partial class init
     {
         /// <inheritdoc />

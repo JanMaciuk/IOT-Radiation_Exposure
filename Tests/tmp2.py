@@ -37,6 +37,7 @@ def send_log(client, card_id, zone_id):
 
 def main():
     client = mqtt.Client()
+    client.username_pw_set("admin", "admin")
     client.on_connect = on_connect
     client.on_message = on_message
     
@@ -49,7 +50,7 @@ def main():
     
     try:
         while True:
-            send_log(client, "433598404", 1)
+            send_log(client, "87573883", 1)
             time.sleep(5)
     except KeyboardInterrupt:
         print("[SYSTEM] Zamykanie symulatora...")
