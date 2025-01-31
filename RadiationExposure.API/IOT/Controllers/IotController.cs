@@ -32,8 +32,9 @@ public class IotController : ControllerBase
     }
 
     [HttpGet("last-month-entrances")]
+    [HttpGet("last-month-entrances/{employeeId}")]
     [Tags("Dashboard")]
-    public async Task<ActionResult> GetLastMonthEntrances()
+    public async Task<ActionResult> GetLastMonthEntrances(int? employeeId)
     {
         var startDate = DateTime.UtcNow.AddMonths(-1).Date;
         var endDate = DateTime.UtcNow.Date;
@@ -42,8 +43,15 @@ public class IotController : ControllerBase
             .Select(offset => startDate.AddDays(offset))
             .ToList();
 
-        var entrances = await _context.EmployeeEntrance
-            .Where(e => e.EntranceTime >= startDate)
+        var entranceQuery = _context.EmployeeEntrance
+            .Where(e => e.EntranceTime >= startDate);
+
+        if (employeeId is not null)
+        {
+            entranceQuery = entranceQuery.Where(e => e.EmployeeId == employeeId);
+        }
+        
+        var entrances = await entranceQuery
             .GroupBy(e => e.EntranceTime.Date)
             .Select(g => new
             {
@@ -65,7 +73,7 @@ public class IotController : ControllerBase
 
         return Ok(result);
     }
-
+    
     [HttpGet("dashboard")]
     [Tags("Dashboard")]
     public async Task<ActionResult> GetDashboardStats()

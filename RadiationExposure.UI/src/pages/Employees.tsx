@@ -8,6 +8,7 @@ import {
 import { Employee } from '../models/types';
 import { PageHeader } from '../components/PageHeader';
 import { formatDateCell } from '../utils/formatters';
+import { EmployeePanel } from '../components/EmployeePanel';
 
 export const Employees = () => {
   const { data: employeeList } = useGetEmployees();
@@ -51,8 +52,12 @@ export const Employees = () => {
   const table = useMaterialReactTable({
     columns,
     data: employeeList ?? [],
+    enableExpanding: true,
+    renderDetailPanel: (rowData) => (
+      <EmployeePanel employeeId={rowData.row.original.id} />
+    )
   })
-  
+
   return (
     <>
       <PageHeader title='Employees' />

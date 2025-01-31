@@ -1,9 +1,13 @@
-import { useGetLastMonthEntrances } from '../hooks/useGetLastMonthEntrances';
 import { CircularProgress } from '@mui/material';
+import { useGetLastMonthEntrances } from '../hooks/useGetLastMonthEntrances';
 import { DateCountGraph } from './DateCountGraph';
 
-export const EntrancesGraph = () => {
-  const { data, isLoading } = useGetLastMonthEntrances();
+interface Props {
+  employeeId: string | number;
+}
+
+export const EmployeePanel = ({ employeeId }: Props) => {
+  const { data, isLoading } = useGetLastMonthEntrances(employeeId);
 
   return (
     <div className="w-full h-64">
@@ -21,5 +25,3 @@ export const EntrancesGraph = () => {
     </div>
   );
 }
-
-
