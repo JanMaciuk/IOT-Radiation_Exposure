@@ -55,6 +55,8 @@ var app = builder.Build();
 app.UseSerilogRequestLogging();
 app.UseCors("Default");
 
+app.Map("/", () => Results.Redirect("/swagger")).ExcludeFromDescription();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
