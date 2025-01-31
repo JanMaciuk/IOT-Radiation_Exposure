@@ -1,3 +1,4 @@
+import { EntrancesGraph } from '../components/EntrancesGraph';
 import { useGetDashboard } from '../hooks/useGetDashboard';
 
 export const Home = () => {
@@ -18,6 +19,8 @@ export const Home = () => {
           <div>{name}</div>  
         </div>
       ))}
+
+      <EntrancesGraph />
     </div>
   )
 }
