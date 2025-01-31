@@ -28,3 +28,10 @@ export type Entrance = {
   duration: number; 
   radiationDose: number;
 }
+
+export type DashboardStats = {
+  totalEmployees: number
+  totalZones: number
+  entrancesToday: number
+  workersAboveRadiationLimit: number
+};
