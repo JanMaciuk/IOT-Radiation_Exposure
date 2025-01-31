@@ -12,5 +12,5 @@ export function formatDuration(duration: number) {
 export function formatDateCell(cell: ReactNode) {
   const cellValue = cell as string | number;
   const date = cellValue ? new Date(cellValue) : null;
-  return date ? date.toLocaleString() : 'Invalid date';
+  return date ? date.toLocaleString() : null;
 }
