@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using IOT;
 using IOT.Data;
 using IOT.Helpers;
 using IOT.Mqtt;
@@ -45,7 +46,9 @@ builder.Services.AddSerilog(config =>
         .Enrich.FromLogContext();
 });
 builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttSettings"));
+builder.Services.Configure<AzureBlobSettings>(builder.Configuration.GetSection("AzureBlobSettings"));
 
+builder.Services.AddScoped<DatabaseBackupService>();
 builder.Services.AddScoped<DataSeeder>();
 builder.Services.AddScoped<MqttBroker>();
 

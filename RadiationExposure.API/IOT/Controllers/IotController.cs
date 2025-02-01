@@ -25,11 +25,28 @@ record DashboardStats
 public class IotController : ControllerBase
 {
     private readonly AppDbContext _context;
+    private readonly DatabaseBackupService _databaseBackupService;
 
-    public IotController(AppDbContext context)
+    public IotController(AppDbContext context, DatabaseBackupService databaseBackupService)
     {
         _context = context;
+        _databaseBackupService = databaseBackupService;
     }
+    
+    [HttpPost("db-backup")]
+    [Tags("Management")]
+    public async Task<ActionResult> CreateDbBackup()
+    {
+        try
+        {
+            await _databaseBackupService.CreateDbBackupAsync();
+        }
+        catch
+        {
+            return BadRequest("Failed to create database backup!");
+        }
+        return Ok("Database backup created successfully!");
+    } 
 
     [HttpGet("last-month-entrances")]
     [Tags("Dashboard")]
