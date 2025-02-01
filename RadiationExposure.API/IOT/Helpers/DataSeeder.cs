@@ -40,7 +40,14 @@ public class DataSeeder
             .RuleFor(e => e.Surname, f => f.Name.LastName())
             .RuleFor(e => e.Card, f => f.Random.Long(000_000_000, 999_999_999).ToString());
 
-        var employees = employeeFaker.Generate(15);
+        //var employees = employeeFaker.Generate(15);
+        var employees = new List<Employee>
+        {
+            new Employee {Name ="Jan", Surname = "Maciuk", Card = "111214734182"},
+            new Employee {Name ="Jan", Surname = "Kowalski", Card = "25118719434160"},
+            new Employee {Name ="Alicja", Surname = "Maciuk", Card = "111214734183"},
+            new Employee {Name ="Anna", Surname = "Maciuk", Card = "111214734184"},
+        };
         _context.Employees.AddRange(employees);
         _context.SaveChanges();
 
