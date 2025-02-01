@@ -9,14 +9,14 @@ using Serilog;
 
 namespace IOT.Mqtt
 {
-    public class MqttServerq
+    public class MqttBroker
     {
         private readonly AppDbContext _context;
         private readonly MqttServerOptions _options;
         private MqttServer _mqttServer;
         private IMqttClient _mqttClient;
 
-        public MqttServerq(AppDbContext context)
+        public MqttBroker(AppDbContext context)
         {
             _context = context;
 
@@ -118,6 +118,10 @@ namespace IOT.Mqtt
                 {
                     response.AccessGranted = false;
                 }
+                if (IsEmployeeRadiationDoseExceeded(employee.Id))
+                {
+                    response.AccessGranted = false;
+                }
 
 
                 var responsePayload = JsonSerializer.Serialize(response);
@@ -170,7 +174,6 @@ namespace IOT.Mqtt
                 Console.WriteLine($"Zone not found for ZoneId: {log.ZoneId}");
                 return;
             }
-
             var existingLog = _context.EmployeeEntrance
                 .FirstOrDefault(e => e.EmployeeId == employee.Id && e.ExitTime == null);
 
@@ -181,6 +184,10 @@ namespace IOT.Mqtt
             }
             else
             {
+                if(IsEmployeeRadiationDoseExceeded(employee.Id))
+                {
+                    return;
+                }
                 var newLog = new EmployeeEntrance
                 {
                     EmployeeId = employee.Id,
@@ -194,5 +201,44 @@ namespace IOT.Mqtt
 
             await _context.SaveChangesAsync();
         }
+
+        public bool IsEmployeeRadiationDoseExceeded(int employee_id)
+        {
+            var employee = _context.Employees.FirstOrDefault(e => e.Id == employee_id);
+
+            var entrances = _context.EmployeeEntrance
+                .Where(e => e.EmployeeId == employee_id && e.EntranceTime >= DateTime.UtcNow.AddHours(-24))
+                .Include(e => e.Zone)
+                .ToList();
+
+            double radiation = 0.0d;
+
+            foreach (var entrance in entrances)
+            {
+                radiation += CalculateRadiationDose(entrance.Zone.Radiation, CalculateDuration(entrance.EntranceTime, entrance.ExitTime));
+            }
+
+            if (radiation > 1_000_000.0)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public double CalculateDuration(DateTime entranceTime, DateTime? exitTime)
+        {
+            double duration = exitTime.HasValue
+                ? (exitTime.Value - entranceTime).TotalMinutes
+                : (DateTime.UtcNow - entranceTime).TotalMinutes;
+
+            return double.Round(duration, 1, MidpointRounding.AwayFromZero);
+        }
+
+        public double CalculateRadiationDose(double radiation, double duration)
+        {
+            return double.Round(radiation * (duration / 60), 3, MidpointRounding.AwayFromZero);
+        }
+
     }
 }

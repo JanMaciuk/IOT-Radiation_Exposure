@@ -47,8 +47,7 @@ builder.Services.AddSerilog(config =>
 builder.Services.Configure<MqttSettings>(builder.Configuration.GetSection("MqttSettings"));
 
 builder.Services.AddScoped<DataSeeder>();
-builder.Services.AddScoped<MqttClient>();
-builder.Services.AddScoped<MqttServerq>();
+builder.Services.AddScoped<MqttBroker>();
 
 var app = builder.Build();
 
@@ -72,9 +71,8 @@ app.MapControllers();
 var scope = app.Services.CreateScope();
     var seeder = scope.ServiceProvider.GetRequiredService<DataSeeder>();
     seeder.Seed();
-//scope.ServiceProvider.GetRequiredService<MqttClient>();
 
-var  mqttServer =  scope.ServiceProvider.GetRequiredService<MqttServerq>();
+var  mqttServer =  scope.ServiceProvider.GetRequiredService<IOT.Mqtt.MqttBroker>();
 await mqttServer.StartAsync();
 
 
